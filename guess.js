@@ -5,17 +5,19 @@ let mesaj = document.querySelector(".msg");
 
 let skor = 10;
 
-let enYuksekSkor = 0;
+
 /* const girlenSyi = document.querySelector(".check")
 girlenSyi.onclick = () => {
     const tahmin = document.querySelector(".guess")
     console.log(tahmin.value);
 } */ //!diğer bir event kullanım şekli aynı inputtan girilen aynı tahmin i yakalar
+let enYuksekSkor = localStorage.getItem("top-score") || 0;
+document.querySelector(".top-score").textContent = enYuksekSkor
 
 document.querySelector(".check").addEventListener("click", () => {
   const tahmin = document.querySelector(".guess").value;
   /*  console.log(tahmin); */
-  document.querySelector(".guess").value = "" 
+
   if (!tahmin) {
     //! tahmin girilmediği durumlarda if in çalışmasını istiyorum bu yüzden de tahmin girilmediğinde değeri false olur ama ben if bloğunun çalışmasını istediğimden ! koyarak false u true yaparım.
     mesaj.textContent = "Lütfen bir sayı giriniz...🙂";
@@ -23,7 +25,9 @@ document.querySelector(".check").addEventListener("click", () => {
     mesaj.textContent = "Tebrikler bildiniz...👏🏻";
     document.querySelector("body").style.backgroundColor = "green";
     document.querySelector(".number").textContent = rastgeleSayi;
+    document.querySelector(".check").disabled = true
     if(skor > enYuksekSkor) {
+      localStorage.setItem("top-score",skor)
       enYuksekSkor = skor
       document.querySelector(".top-score").textContent = skor
     }
@@ -54,11 +58,12 @@ document.querySelector(".check").addEventListener("click", () => {
 document.querySelector(".again").onclick = () => {
   document.querySelector("body").style.backgroundColor ="#2d3436"
   rastgeleSayi = Math.ceil(Math.random()*20)
-  skor = 10
+  skor = 10;
   document.querySelector(".score").textContent = skor
   document.querySelector(".number").textContent = "?"
   document.querySelector(".guess").value = "" 
   mesaj.textContent = "Oyun yeniden başlıyor..."
+  document.querySelector(".check").disabled = false
 }
 
 document.addEventListener("keydown", function(e){
@@ -68,4 +73,18 @@ document.addEventListener("keydown", function(e){
   } 
 })
 
-localStorage.setItem()
+document.querySelector(".check").addEventListener("click", () => {
+  tahmin = document.querySelector(".guess").value 
+
+  const tahminiSayi = parseInt(tahmin) 
+  if (tahminiSayi>=1 && tahminiSayi <=20 && !isNaN(tahminiSayi)) {
+    
+  } else {
+    mesaj.textContent = "Geçersiz sayı girdiniz 1 -20 arasında bir sayı giriniz."
+    skor ++
+    document.querySelector(".guess").value = ""
+    document.querySelector("body").style.backgroundColor = "magenta"
+  }
+})
+
+
